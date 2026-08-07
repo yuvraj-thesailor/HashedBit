@@ -30,25 +30,17 @@ CREATE TABLE Table_Booking (
     CONSTRAINT chk_table_number      CHECK (table_number > 0),
     CONSTRAINT chk_number_of_guests  CHECK (number_of_guests > 0),
     CONSTRAINT chk_advance_payment   CHECK (advance_payment >= 0)
-    -- Note: "booking_date must not be in the past" is NOT enforced here.
-    -- MySQL rejects CHECK constraints that use non-deterministic functions
-    -- like CURRENT_DATE/CURDATE() (error 3814), since a constraint's
-    -- validity would then change from one day to the next without the
-    -- row itself changing. This rule is enforced instead in the Express
-    -- backend's validation middleware (see validateBooking.js, isNotInPast).
 );
 
 -- ------------------------------------------------------------
 -- Indexes for common query patterns
--- (e.g. checking table availability, listing upcoming bookings,
--- filtering by status)
 -- ------------------------------------------------------------
 CREATE INDEX idx_booking_date_time ON Table_Booking (booking_date, booking_time);
 CREATE INDEX idx_table_number      ON Table_Booking (table_number);
 CREATE INDEX idx_status            ON Table_Booking (status);
 
 -- ------------------------------------------------------------
--- Sample seed data (optional - comment out or remove if not needed)
+-- Sample seed data
 -- ------------------------------------------------------------
 INSERT INTO Table_Booking
     (customer_name, contact_number, email, table_number, number_of_guests, booking_date, booking_time, special_request, status, advance_payment)
